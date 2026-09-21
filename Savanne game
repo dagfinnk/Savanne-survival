@@ -1,0 +1,99 @@
+#basics variables and stuff
+import random
+hp = 100
+poeng = 0
+lvl = 0
+
+inventory = ["medkit"]
+stash = ["medkit", "kniv", "ingenting", "stein", "pistol"]
+dyr = {
+    "løve": 100,
+    "hjort": 30,
+    "ape": 20,
+    "zebra": 40
+}
+
+mhp = random.randint(20, 80) #random damage variable for hitting with hands
+mmhp = random.randint(15, 65) #medium random damage variable for hitting......
+lmhp = random.randint(10, 50) #low random damage variable for hitting with stein
+
+
+#spill start
+while hp > 0:
+    dyr_fant = random.choice(list(dyr))
+    
+    fant = random.choices(
+          stash,
+          weights=[30, 20, 20, 20, 10]
+     )[0]
+
+
+    print("Du er på savannen og en", dyr_fant, "er på vei mot deg. Hva gjør du? 1. Slå den med hendene. 2. Gå vekk og let etter stash. 3. Vandre videre på savannen. 4. Bruk noe fra inventory")
+
+    svar1 = int(input("Ditt svar: "))
+    if svar1 == 1:
+        if dyr_fant != "løve":
+            hp = hp-mhp
+            print("Du skadet hendene og mistet", mhp, "hp,", [dyr_fant], "løp videre")
+            print("hp =", hp)
+        else:
+            hp = hp-101
+    elif svar1 == 2:
+        print("du fant", fant, "du vandrer videre på savannen")
+        if fant != "ingenting":
+            inventory.append(fant)
+    elif svar1 == 3:
+        print("du vandrer videre på savannen")
+    elif svar1 == 4:
+        print("Hva vil du bruke?")
+        print(inventory)
+        item = input("Skriv inn item: ")
+        if item in inventory:
+            if item == "medkit":
+                hp = hp+50
+                print("Du brukte medkit og fikk 50 hp, du har nå", hp, "hp")
+                inventory.remove("medkit")
+            elif item == "kniv":
+                if dyr_fant == "løve":
+                    hp = hp-50
+                    print("Du prøvde å bruke kniv på løven, men den angrep deg før den løpte, du mistet 50 hp, du har nå", hp, "hp")
+                elif dyr_fant != "løve":
+                    poeng = poeng + 1
+                    print("du drepte dyret og fikk 1 medkit og +1 poeng")
+                    print("poeng =", poeng)
+                    inventory.append("medkit")
+                    print("inventoryen din er nå", inventory)
+            elif item == "pistol":
+                if dyr_fant == "løve":
+                    print("du drepte løven og fikk 2 medkits og 3 poeng")
+                    poeng = poeng + 3
+                    print("poeng =", poeng)
+                    inventory.append("medkit")
+                    inventory.append("medkit")
+                    print("inventoryen din er nå", inventory)
+                elif dyr_fant != "løve":
+                    poeng = poeng + 1
+                    print("du drepte dyret og fikk 1 medkit og +1 poeng")
+                    print("poeng =", poeng)
+                    inventory.append("medkit")
+                    print("inventoryen din er nå", inventory)
+            elif item == "stein":
+                if dyr_fant == "løve": 
+                    hp = hp-90
+                    print("Steinen hjelper ikke, løven angriper")
+                elif dyr_fant != "løve":
+                    print("du kastet en stein på dyret, det gjorde et lite angrep og løp videre")
+                    inventory.remove("stein")
+                    hp = hp-lmhp
+            elif item == "ingenting":
+                print("du fant ingenting, du vandrer videre på savannen")
+        else:
+            print("Du har ikke dette itemet i inventory.")
+    else:
+        print("Velg 1, 2, 3 eller 4.")
+    print("Du har nå", hp, "hp og disse items i inventory:", inventory, "du har poeng", poeng)
+
+print("Du døde, spillet er over, du samlet", poeng, "poeng")
+
+
+    
