@@ -1,5 +1,5 @@
 ###basics variables and stuff
-# Veronje = capybara
+# Lapisulv = makk
 import random
 hp = 100
 poeng = 0
